@@ -1005,7 +1005,7 @@
 // extra connectors. Leave undefined any used for non-endstop and non-probe purposes.
 #define USE_XMIN_PLUG
 #define USE_YMIN_PLUG
-#define USE_ZMIN_PLUG
+// #define USE_ZMIN_PLUG      // JSF 7/22/2022
 //#define USE_IMIN_PLUG
 //#define USE_JMIN_PLUG
 //#define USE_KMIN_PLUG
@@ -1245,10 +1245,10 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+//#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 
 // Force the use of the probe for Z-axis homing
-//#define USE_PROBE_FOR_Z_HOMING  // Manual mesh not have a probe
+#define USE_PROBE_FOR_Z_HOMING  // Manual mesh not have a probe
 
 /**
  * Z_MIN_PROBE_PIN
@@ -1265,7 +1265,7 @@
  *      - normally-closed switches to GND and D32.
  *      - normally-open switches to 5V and D32.
  */
-//#define Z_MIN_PROBE_PIN 32 // Pin 32 is the RAMPS default
+// #define Z_MIN_PROBE_PIN 32 // Pin 32 is the RAMPS default      JSF
 
 /**
  * Probe Type
@@ -1279,7 +1279,7 @@
  * Use G29 repeatedly, adjusting the Z height at each point with movement commands
  * or (with LCD_BED_LEVELING) the LCD controller.
  */
-#define PROBE_MANUALLY  // Manual mesh version
+// #define PROBE_MANUALLY  // Manual mesh version
 
 /**
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
@@ -1302,7 +1302,7 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-//#define BLTOUCH
+#define BLTOUCH
 
 /**
  * MagLev V4 probe by MDD
@@ -1426,7 +1426,7 @@
  * - Common probes trigger below the nozzle and have negative values for Z offset.
  * - Probes triggering above the nozzle height are uncommon but do exist. When using
  *   probes such as this, carefully set Z_CLEARANCE_DEPLOY_PROBE and Z_CLEARANCE_BETWEEN_PROBES
- *   to avoid collisions during probing.
+ *   to avoid collisions during probing.XY_PROBE_SPEED to 10000
  *
  * Tune and Adjust
  * -  Probe Offsets can be tuned at runtime with 'M851', LCD menus, babystepping, etc.
@@ -1439,7 +1439,7 @@
  *  - Probe in FRONT of the Nozzle has a Negative Y offset
  *
  * Some examples:
- *   #define NOZZLE_TO_PROBE_OFFSET { 10, 10, -1 }   // Example "1"
+ *   #define NOZZLE_TO_PROBE_OFFSET { 10, 10, 0 }   // Example "1"
  *   #define NOZZLE_TO_PROBE_OFFSET {-10,  5, -1 }   // Example "2"
  *   #define NOZZLE_TO_PROBE_OFFSET {  5, -5, -1 }   // Example "3"
  *   #define NOZZLE_TO_PROBE_OFFSET {-15,-10, -1 }   // Example "4"
@@ -1454,11 +1454,13 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { 0, 0, 0 }  // MRiscoC BLTouch offset for support: https://www.thingiverse.com/thing:4605354 (z-offset = -1.80 mm)  // Manual mesh use the nozzle as probe
+/** JSF CRTouch probe to Nozzle center */
+#define NOZZLE_TO_PROBE_OFFSET { -44, 5, 0 }  // MRiscoC BLTouch offset for support: https://www.thingiverse.com/ thing:4605354 (z-offset = -1.80 mm)  // Manual mesh use the nozzle as probe
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
-#define PROBING_MARGIN 10  // MRiscoC Avoid clips on borders
+// JSF 7/22/2022
+#define PROBING_MARGIN 20  // MRiscoC Avoid clips on borders
 
 // X and Y axis travel speed (mm/min) between probes
 #define XY_PROBE_FEEDRATE (200*60)  // MRiscoC increase travel speed between probes
@@ -1645,10 +1647,10 @@
  */
 //#define Z_IDLE_HEIGHT Z_HOME_POS
 
-//#define Z_HOMING_HEIGHT  4      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
+#define Z_HOMING_HEIGHT  4      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
                                   // Be sure to have this much clearance over your Z_MAX_POS to prevent grinding.
 
-//#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
+#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z   JSF 7/22/2022
 
 // Direction of endstops when homing; 1=MAX, -1=MIN
 // :[-1,1]
@@ -1671,7 +1673,7 @@
 // Travel limits (linear=mm, rotational=°) after homing, corresponding to endstop positions.
 #define X_MIN_POS 0  // MRiscoC Stock physical limit
 #define Y_MIN_POS 0  // MRiscoC Stock physical limit
-#define Z_MIN_POS 0
+#define Z_MIN_POS 0   // JSF 7/22/2022 allow moviement of Z-axis downwards to set Z Probe Offset
 #define X_MAX_POS 248  // MRiscoC Stock physical limit
 #define Y_MAX_POS 231  // MRiscoC Stock physical limit
 #define Z_MAX_POS 250  // Ender Configs
@@ -1844,9 +1846,9 @@
  */
 //#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
-//#define AUTO_BED_LEVELING_BILINEAR
+#define AUTO_BED_LEVELING_BILINEAR
 //#define AUTO_BED_LEVELING_UBL
-#define MESH_BED_LEVELING  // Manual Mesh
+// #define MESH_BED_LEVELING  // Manual Mesh
 
 /**
  * Normally G28 leaves leveling disabled on completion. Enable one of
@@ -1861,7 +1863,7 @@
  */
 #define PREHEAT_BEFORE_LEVELING  // MRiscoC Heatting to compensate thermal expansions
 #if ENABLED(PREHEAT_BEFORE_LEVELING)
-  #define LEVELING_NOZZLE_TEMP 175   // (°C) Only applies to E0 at this time  // Preheat nozzle without oozing
+  //#define LEVELING_NOZZLE_TEMP 175   // (°C) Only applies to E0 at this time  // Preheat nozzle without oozing
   #define LEVELING_BED_TEMP     50
 #endif
 
@@ -1927,10 +1929,10 @@
     // Experimental Subdivision of the grid by Catmull-Rom method.
     // Synthesizes intermediate points to produce a more detailed mesh.
     //
-    //#define ABL_BILINEAR_SUBDIVISION
+    #define ABL_BILINEAR_SUBDIVISION
     #if ENABLED(ABL_BILINEAR_SUBDIVISION)
       // Number of subdivisions between probe points
-      #define BILINEAR_SUBDIVISIONS 3
+      #define BILINEAR_SUBDIVISIONS 5
     #endif
 
   #endif
@@ -1975,7 +1977,8 @@
  * Add a bed leveling sub-menu for ABL or MBL.
  * Include a guided procedure if manual probing is enabled.
  */
-//#define LCD_BED_LEVELING
+// JSF 7/22/2022 Build fails with this enabled. Is this needed?
+// #define LCD_BED_LEVELING
 
 #if ENABLED(LCD_BED_LEVELING)
   #define MESH_EDIT_Z_STEP  0.025 // (mm) Step size while manually probing Z axis.
@@ -2048,7 +2051,7 @@
  * - Allows Z homing only when XY positions are known and trusted.
  * - If stepper drivers sleep, XY homing may be required again before Z homing.
  */
-//#define Z_SAFE_HOMING
+#define Z_SAFE_HOMING
 
 #if ENABLED(Z_SAFE_HOMING)
   #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing
@@ -2056,7 +2059,8 @@
 #endif
 
 // Homing speeds (linear=mm/min, rotational=°/min)
-#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (10*60) }  // MRiscoC Homing speed-up
+//#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (10*60) }  // MRiscoC Homing speed-up
+#define HOMING_FEEDRATE_MM_M { 4060, 4060, 860 }  // JSF 7/21/2022 Increase homing speed
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
@@ -2169,9 +2173,9 @@
 //
 #define PREHEAT_1_LABEL       "PLA"
 #define PREHEAT_1_TEMP_HOTEND 195
-#define PREHEAT_1_TEMP_BED     55
+#define PREHEAT_1_TEMP_BED     60
 #define PREHEAT_1_TEMP_CHAMBER 35
-#define PREHEAT_1_FAN_SPEED    64 // Value from 0 to 255
+#define PREHEAT_1_FAN_SPEED     128 // Value from 0 to 255
 
 #define PREHEAT_2_LABEL       "ABS"
 #define PREHEAT_2_TEMP_HOTEND 230
@@ -2671,7 +2675,7 @@
 // RepRapDiscount FULL GRAPHIC Smart Controller
 // https://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
 //
-//#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+// #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
 
 //
 // K.3D Full Graphic Smart Controller
@@ -3091,7 +3095,7 @@
 //
 // Ender-3 v2 OEM display. A DWIN display with Rotary Encoder.
 //
-//#define DWIN_CREALITY_LCD           // Creality UI
+// #define DWIN_CREALITY_LCD           // Creality UI  JSF LCD
 #define DWIN_LCD_PROUI              // Pro UI by MRiscoC
 // Professional firmware features:
 #define ProUIex 1
