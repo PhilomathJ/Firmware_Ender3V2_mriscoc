@@ -24,6 +24,7 @@
 /**
  * temperature.h - temperature controller
  */
+#include "stepper.h"
 
 #include "thermistor/thermistors.h"
 
@@ -39,6 +40,15 @@
 
 #if HAS_FANCHECK
   #include "../feature/fancheck.h"
+#endif
+
+/**
+ * JSF 7/22/2022
+ * Add to address bug "'babystep' was not declared in this scope"
+ * Addressed here: https://github.com/MarlinFirmware/Marlin/issues/2921
+ */
+#if ENABLED(PID_ADD_EXTRUSION_RATE) || ENABLED(BABYSTEPPING)
+  #include "stepper.h"
 #endif
 
 #ifndef SOFT_PWM_SCALE
